@@ -10,14 +10,14 @@ jobs:
   hello:
     runs-on: ubuntu-latest
     steps:
-      - use: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Say Hello
         run: echo "Hello, GitHub Actions!"
         shell: bash
   goodbye:
     runs-on: ubuntu-latest
     steps:
-      - use: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Say Goodbye
         run: echo "Goodbye, GitHub Actions!"
         shell: bash
