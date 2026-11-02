@@ -2,7 +2,10 @@ name: Create a comment on an issue
 on:
   issues:
     types: [opened]
-
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
 jobs:
   comment-with-action:
     runs-on: ubuntu-latest
