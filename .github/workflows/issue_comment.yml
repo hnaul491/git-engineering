@@ -24,6 +24,25 @@ jobs:
   comment-with-api:
     runs-on: ubuntu-latest
     steps:
+      - name: print the github token
+        run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+      - name: print the user name
+        run: echo "USER_NAME=${{ github.event.issue.user.login }}"
+      - name: print the repository name
+        run: echo "REPOSITORY_NAME=${{ github.event.repository.name }}"
       - name: Create a comment on the issue using GitHub API
-        run: echo '${{ toJson(github.event) }} - Creating with GitHub API'
-        shell: bash
+        run: |
+          curl -L \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2026-03-10" \
+            -H "Content-Type: application/json" \
+            https://api.github.com/repos/OWNER/REPO/issues/comments
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
+            -d '{"body":"This is a test comment created using the GitHub API"}'
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }},
+          GITHUB_ORGANIZATION: ${{ github.event.repository.owner.login }},
+          GITHUB_REPOSITORY: ${{ github.event.repository.name }},
+          GITHUB_ISSUE_NUMBER: ${{ github.event.issue.number }},
