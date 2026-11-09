@@ -13,7 +13,7 @@ jobs:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v5
         with:
-          issue-number: ${{github.event.issue.number}}
+          issue-number: $GITHUB_ISSUE_NUMBER
           body: |
             This is a multi-line test comment
             - With GitHub **Markdown** :sparkles:
@@ -25,20 +25,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: print the github token
-        run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        run: echo "GITHUB_TOKEN=$GITHUB_TOKEN"
       - name: print the user name
         run: echo "USER_NAME=${{ github.event.issue.user.login }}"
       - name: print the repository name
-        run: echo "REPOSITORY_NAME=${{ github.event.repository.name }}"
+        run: echo "REPOSITORY_NAME=$GITHUB_REPOSITORY"
       - name: Create a comment on the issue using GitHub API
         run: |
           curl -L \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "X-GitHub-Api-Version: 2026-03-10" \
             -H "Content-Type: application/json" \
             https://api.github.com/repos/OWNER/REPO/issues/comments
-            https://api.github.com/repos/${{ GITHUB_REPOSITORY }}/issues/${{ GITHUB_ISSUE_NUMBER }}/comments \
+            https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$GITHUB_ISSUE_NUMBER/comments \
             -d '{"body":"This is a test comment created using the GitHub API"}'
 
         env:
